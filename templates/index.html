@@ -3,8 +3,17 @@
     <head>
         <title>The world of Star Wars</title>
         <link rel="stylesheet" href="/static/style.css">
-        <script src="/static/star_wars.js" defer></script>
+        <script src="{{ url_for('static', filename='star_wars.js') }}" defer></script>
     </head>
     <body>
+        <table id="sw-table">
+            <tr>
+                {% for title in table_header %}
+                    <th>{{ title }}</th>
+                {% endfor %}
+            </tr>  
+        </table>  
+        <button type="button" id="prev">Previous</button>    
+        <button type="button" id="next">Next</button>
     </body>
 </html>
