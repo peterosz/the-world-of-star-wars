@@ -1,6 +1,10 @@
-function loadTable() {
-    var planets = getPlanets();
+function loadTable(url) {
     var table = document.getElementById('sw-table');
+    var planets = getPlanets(url);
+    var tableBody = document.createElement('tbody');
+    tableBody.setAttribute('id', 'table-body');
+    table.appendChild(tableBody);
+    planets = planets['results'];
     for (let i = 0; i < planets.length; i++) {
         var newRow = document.createElement('tr');
         var planetName = document.createElement('td');
@@ -8,8 +12,8 @@ function loadTable() {
         var planetClimate = document.createElement('td');
         var planetTerrain = document.createElement('td');
         var planetSurface = document.createElement('td');
-        var planetPopulation = document.createElement('td');
-        table.appendChild(newRow);
+        var planetPopulation = document.createElement('td');    
+        tableBody.appendChild(newRow);
         newRow.appendChild(planetName);
         newRow.appendChild(planetDiameter);
         newRow.appendChild(planetClimate);
@@ -28,7 +32,7 @@ function loadTable() {
 
 function getPlanets(url) {
     var xhttp = new XMLHttpRequest();
-    if (url) {
+    if (typeof url === 'string' && url.indexOf('api') > -1) {
         xhttp.open("GET", url, false);
     } else {
         xhttp.open("GET", "http://swapi.co/api/planets/", false);
@@ -36,13 +40,39 @@ function getPlanets(url) {
     xhttp.setRequestHeader("Content-Type", "application/json");
     xhttp.send();
     var response = JSON.parse(xhttp.responseText);
-    return response['results'];
+    return response;
+}
+
+
+function loadNewPage(pageNumber) {
+    var table = document.getElementById('sw-table');
+    var oldRows = document.getElementById('table-body');
+    table.removeChild(oldRows);
+    url = 'https://swapi.co/api/planets/?page=' + pageNumber;
+    loadTable(url);
 }
 
 
 function main() {
-    loadTable();
-    var nextButton = document.getElementById('next');
+    var pageNumber = 1;
+    var url = "http://swapi.co/api/planets/";
+    var nextBtn = document.getElementById('next');
+    var prevBtn = document.getElementById('prev');
+    nextBtn.addEventListener('click', function() {
+        while (pageNumber < 7) {
+        pageNumber++;
+        loadNewPage(pageNumber);
+        return pageNumber;
+        }
+    });
+    prevBtn.addEventListener('click', function() {
+        while (pageNumber > 1) {
+            pageNumber--;
+            loadNewPage(pageNumber);
+            return pageNumber;
+        }
+    });
+    loadTable(url);
 }
 
 

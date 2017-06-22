@@ -6,14 +6,19 @@
         <script src="{{ url_for('static', filename='star_wars.js') }}" defer></script>
     </head>
     <body>
+        <header>
+            <h1>Star Wars universe planets</h1>
+        </header>
         <table id="sw-table">
+            <thead>
             <tr>
                 {% for title in table_header %}
                     <th>{{ title }}</th>
                 {% endfor %}
-            </tr>  
+            </tr> 
+            </thead> 
         </table>  
-        <button type="button" id="prev">Previous</button>    
-        <button type="button" id="next">Next</button>
+        <button type="button" id="prev">Previous Page</button>    
+        <button type="button" id="next">Next Page</button>
     </body>
 </html>
