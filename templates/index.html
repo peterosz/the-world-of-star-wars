@@ -20,5 +20,27 @@
         </table>  
         <button type="button" id="prev">Previous Page</button>    
         <button type="button" id="next">Next Page</button>
+        <div id="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title"></div>
+                    <div class="modal-close">&times;</div>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    {% for title in modal_table_header %}
+                                        <th>{{ title }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <button class="modal-close-button">Close</button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
