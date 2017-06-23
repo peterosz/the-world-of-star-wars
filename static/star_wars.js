@@ -28,38 +28,59 @@ function loadTable(url) {
         planetTerrain.innerHTML = planets[i].terrain;
         planetSurface.innerHTML = planets[i].surface_water;
         planetPopulation.innerHTML = planets[i].population;
+        planetName.setAttribute('data-name', planets[i].name);
+        planetName.setAttribute('id', 'planet-name'+i);
         if (planets[i].residents.length > 0) {
             var residentsButton = document.createElement('button');
-            residentsButton.setAttribute('class', 'residents');
-            residentsButton.innerHTML = planets[i].residents.length +' residents';
+            residentsButton.innerHTML = planets[i].residents.length +' resident(s)';
             planetResidents.appendChild(residentsButton);
+            var residentsList = planets[i].residents;
+            residentsButton.setAttribute('id', 'residentBtn'+i);
             residentsButton.setAttribute('data-residents', planets[i].residents);
+            residentsButton.addEventListener('click', function() {return loadModalTable(i);});
         } else {
             planetResidents.innerHTML = 'No known residents';
         }
     }
-    var residentsEvent = document.getElementsByClassName('residents');
-    for (var j = 0; j < residentsEvent.length; j++) {
-            residentsEvent[j].addEventListener('click', loadModalTable(j));
-        }
 }
 
 
-function loadModalTable(x) {
+function loadModalTable(i) {
     var modal = document.getElementById('modal');
     var modalTable = document.getElementsByClassName('modal-table')[0];
     var modalTableBody = document.createElement('tbody');
+    modalTableBody.setAttribute('id', 'modal-table-body');
     modal.style.display = 'block';
-    modalTable.appendChild(modalTableBody);
-    var residentsData = [];
-    var residents = document.getElementsByClassName('residents')[x];
+    var closeBtn = document.getElementsByClassName('modal-close-button')[0];
+    var closeBtnX = document.getElementsByClassName('modal-close')[0];
     
-    residents = residents.getAttribute('data-residents');
-    residents.split(',');
-    for (let i = 0; i < residents.length; i++) {
-        residentsData.push(getApiData(residents[i]));
+    window.onclick = function(event) {
+    if (event.target === modal) {
+        var modalOldRows = document.getElementById('modal-table-body');
+        modalTable.removeChild(modalOldRows);
+        modal.style.display = "none";       
+        }
     }
-    for (let r = 0; r < residentsData.length; r++) {
+    closeBtn.onclick = function() {
+        var modalOldRows = document.getElementById('modal-table-body');
+        modalTable.removeChild(modalOldRows);
+        modal.style.display = "none";        
+    }
+    closeBtnX.onclick = function() {
+        var modalOldRows = document.getElementById('modal-table-body');
+        modalTable.removeChild(modalOldRows);
+        modal.style.display = "none";
+    }
+    var planetName = document.getElementById('planet-name'+i);
+    var getPlanetName = planetName.getAttribute('data-name');
+    var modalTitle = document.getElementsByClassName('modal-title')[0];
+    modalTitle.innerHTML = 'Residents of '+getPlanetName;
+    modalTable.appendChild(modalTableBody);
+    residentBtn = document.getElementById('residentBtn'+i);
+    residentsList = residentBtn.getAttribute('data-residents');
+    residentsList = residentsList.split(',');
+    for (let x = 0; x < residentsList.length; x++) {
+        var residentsData = getApiData(residentsList[x]);
         var residentnewRow = document.createElement('tr');
         var residentName = document.createElement('td');
         var residentHeight = document.createElement('td');
@@ -78,41 +99,22 @@ function loadModalTable(x) {
         residentnewRow.appendChild(residentEyeColor);
         residentnewRow.appendChild(residentBirthYear);
         residentnewRow.appendChild(residentGender);
-        residentName.innerHTML = residentsData[r].name;
-        residentHeight.innerHTML = residentsData[r].heigth;
-        residentMass.innerHTML = residentsData[r].mass;
-        residentHairColor.innerHTML = residentsData[r].hair_color;
-        residentSkinColor.innerHTML = residentsData[r].skin_color;
-        residentEyeColor.innerHTML = residentsData[r].eye_color;
-        residentBirthYear.innerHTML = residentsData[r].birth_year;
-        residentGender.innerHTML = residentsData[r].gender;
-    }
-    
-    
-    var closeBtn = document.getElementsByClassName('modal-close-button')[0];
-    var closeBtnX = document.getElementsByClassName('modal-close')[0];
-    window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";
-        }
-    }
-    closeBtn.onclick = function() {
-    modal.style.display = "none";
-    }
-    closeBtnX.onclick = function() {
-    modal.style.display = "none";
+        residentName.innerHTML = residentsData.name;
+        residentHeight.innerHTML = residentsData.height;
+        residentMass.innerHTML = residentsData.mass;
+        residentHairColor.innerHTML = residentsData.hair_color;
+        residentSkinColor.innerHTML = residentsData.skin_color;
+        residentEyeColor.innerHTML = residentsData.eye_color;
+        residentBirthYear.innerHTML = residentsData.birth_year;
+        residentGender.innerHTML = residentsData.gender;
     }
 }
 
 
 function getApiData(url) {
     var xhttp = new XMLHttpRequest();
-    if (typeof url === 'string' && url.indexOf('api') > -1) {
-        xhttp.open("GET", url, false);
-    } else {
-        xhttp.open("GET", "http://swapi.co/api/planets/", false);
-    }
-    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.open('GET', url, false);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
     var response = JSON.parse(xhttp.responseText);
     return response;
@@ -132,9 +134,8 @@ function main() {
     var pageNumber = 1;
     var nextBtn = document.getElementById('next');
     var prevBtn = document.getElementById('prev');
-    prevBtn.style.display = 'none';
+    var url = 'http://swapi.co/api/planets/';
     nextBtn.addEventListener('click', function() {
-        prevBtn.style.display = 'inline-block';
         while (pageNumber < 7) {
         pageNumber++;
         loadNewPage(pageNumber);
@@ -148,7 +149,7 @@ function main() {
             return pageNumber;
         }
     });
-    loadTable();
+    loadTable(url);
 }
 
 

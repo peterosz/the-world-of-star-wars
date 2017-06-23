@@ -1,6 +1,39 @@
-td, th {
-    border: 1px solid;
+body {
+    background-color: lightskyblue;
 }
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #f2f2f2;
+}
+tr:nth-child(even){background-color: lightgrey}
+tr:hover {
+          background-color: #008CBA;
+        }
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #008CBA;
+    color: white;
+}
+h2 {
+    color: white;
+}
+#button, #next, #prev, .modal-close-button {
+    background-color: #008CBA ; 
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
 
 #modal { 
     display: none;
@@ -22,12 +55,16 @@ td, th {
     margin: auto;
     padding: 0;
     border: 1px solid #888;
-    width: 40%;
+    border-radius: 16px;
+    width: 46%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    height: auto;
+    overflow: auto;
+    padding: 20px 20px;
 }
 
 @-webkit-keyframes animatetop {
@@ -41,7 +78,7 @@ td, th {
 }
 
 .modal-close {
-    color: white;
+    color: black;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -50,28 +87,25 @@ td, th {
 
 .modal-close:hover,
 .modal-close:focus {
-    color: #000;
+    color: grey;
     text-decoration: none;
     cursor: pointer;
 }
 
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
-    height: 2em;
+    color: black;
 }
 
 .modal-body {
   padding: 2px 16px;
-  height: 2em;
+  max-height: 100%;
+  height: auto;
+  overflow: auto;
 }
 
 .modal-close-button {
     float: right;
-    clear: none;
-    padding: 0.25em;
-    margin: 0.25em 0;
 }
 
 .modal-table {
@@ -80,7 +114,7 @@ td, th {
     height: 28px;
     font-size: 24px;
     clear: none;
-    float: left;
+    margin: 20px;
 }
 
 .modal-title {

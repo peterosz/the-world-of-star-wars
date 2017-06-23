@@ -27,17 +27,15 @@
                     <div class="modal-close">&times;</div>
                 </div>
                 <div class="modal-body">
-                    <div class="modal-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    {% for title in modal_table_header %}
-                                        <th>{{ title }}</th>
-                                    {% endfor %}
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                    <table class="modal-table">
+                        <thead>
+                            <tr>
+                                {% for title in modal_table_header %}
+                                    <th>{{ title }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    </table>
                     <button class="modal-close-button">Close</button>
                 </div>
             </div>
