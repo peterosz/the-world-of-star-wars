@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Log in</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <script src="{{ url_for('static', filename='star_wars.js') }}" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>Please type your credentials:</h1>
+        </header>
+        <form method="POST" action="/login">
+            <p>User Name:</p>
+            <input type="text" name="name" pattern=".{3,}" required title="3 characters minimum">
+            <p>Password:</p>
+            <input type="password" name="password" pattern=".{5,}"   required title="5 characters minimum">
+            <button type="submit">Log in</button>
+            <p>Don't have a user name yet?</p>
+            <a href="/register">Register here</a>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </form>
+    </body>
+</html>

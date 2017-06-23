@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Register</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <script src="{{ url_for('static', filename='psw_check.js') }}" defer></script>
+    </head>
+    <body>
+        <header>
+            <h1>Please add a user name and password:</h1>
+        </header>
+        <form method="POST" action="/register">
+            <p>User Name:</p>
+            <input type="text" name="name" required>
+            <p>Password:</p>
+            <input type="password" name="password1" id="pw1" pattern=".{3,}" required title="3 characters minimum">
+            <p>Confirm password:</p>
+            <input type="password" name="password2" id="pw2" pattern=".{5,}" required title="5 characters minimum">
+            <button type="submit">Register</button>
+        </form>
+    </body>
+</html>

@@ -8,6 +8,13 @@
     <body>
         <header>
             <h1>Star Wars universe planets</h1>
+            {% if user_logged_in %}
+                {{ user_logged_in }}
+                <a href="/logout">Log out</a>
+            {% else %}
+                <a href="/login">Log in</a>
+                <a href="/register">Register</a>            
+            {% endif %}
         </header>
         <table id="sw-table">
             <thead>
