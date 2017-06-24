@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from connect_to_db import execute_query
 from datetime import datetime
 import requests
+import json
 
 app = Flask(__name__)
 app.secret_key = 'ssssh its a secret'
@@ -25,6 +26,8 @@ def index():
                           'Eye color',
                           'Birth year',
                           'Gender']
+    stats_header = ['Planet name',
+                    'Votes']
     if session['logged_in']:
         user_logged_in = session['username']
         table_header = ['Name',
@@ -37,10 +40,12 @@ def index():
                         'Vote']
         return render_template('index.html', table_header=table_header,
                                             modal_table_header=modal_table_header,
+                                            stats_header=stats_header,
                                             user_logged_in=user_logged_in)
     else:
         return render_template('index.html', table_header=table_header,
-                                             modal_table_header=modal_table_header)
+                                             modal_table_header=modal_table_header,
+                                             stats_header=stats_header)
 
 
 @app.route('/login', methods=['GET'])
@@ -105,8 +110,11 @@ def log_user_in():
         return render_template('login.html')
 
 
-@app.route('/vote/<int:planet_id>', methods=['POST'])
-def vote(planet_id):
+@app.route('/vote', methods=['POST'])
+def vote():
+    get_planetid = request.json['votedPlanetId']
+    planet_id = json.loads(get_planetid)
+    planet_id = planet_id['votedplanet']
     username = session['username']
     timestamp = datetime.now()
     query_userid = '''SELECT id
@@ -121,9 +129,6 @@ def vote(planet_id):
         query_save_vote = '''INSERT INTO planet_votes (planet_id, user_id, submission_time)
                             VALUES ('%s', '%s', '%s');''' % (planet_id, user_id, timestamp)
         execute_query(query_save_vote)
-        flash('Vote registered')
-    else:
-        flash('You have already voted for this planet')
     return redirect(url_for('index'))
 
 

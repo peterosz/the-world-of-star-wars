@@ -32,7 +32,7 @@ function loadTable(pageUrl) {
         planetName.setAttribute('id', 'planet-name'+i);
         planetName.setAttribute('data-id'+i, planets[i].url.replace( /[^\d]/g, '' ));
         newRow.setAttribute('class', 'sw-tr');
-        voteColumn(i);
+        voteColumn(i, planets);
         if (planets[i].residents.length > 0) {
             var residentsButton = document.createElement('button');
             residentsButton.innerHTML = planets[i].residents.length +' resident(s)';
@@ -48,27 +48,29 @@ function loadTable(pageUrl) {
 }
 
 
-function voteColumn(i) {
+function voteColumn(i, planets) {
     var headerColumns = document.getElementsByClassName('sw-th');
     var lastColumn = headerColumns[headerColumns.length - 1];
     var voteCell = document.createElement('td');
     var voteBtn = document.createElement('button');
-    var voteForm = document.createElement('form');
-    var getPlanet = document.getElementById('planet-name'+i);
-    var planetId = getPlanet.getAttribute('data-id'+i);
+    //var voteForm = document.createElement('form');
+    //var getPlanet = document.getElementById('planet-name'+i);
+    //var planetId = getPlanet.getAttribute('data-id'+i);
     var rows = document.getElementsByClassName('sw-tr');
     voteBtn.setAttribute('class', 'vote-button');
-    voteForm.setAttribute('method', 'POST');
-    voteForm.setAttribute('action', '/vote/'+planetId);    
-    voteBtn.setAttribute('type', 'submit');
+    voteBtn.setAttribute('data-planetid', planets[i].url.replace( /[^\d]/g, '' ));
+    //voteBtn.setAttribute('data-planet-name', planets[i].name);
+    //voteForm.setAttribute('method', 'POST');
+    //voteForm.setAttribute('action', '/vote/'+planetId);    
+    //voteBtn.setAttribute('type', 'submit');
     voteBtn.innerHTML = 'Vote on this planet';
     if (lastColumn.innerHTML === 'Vote') {
         rows[i].appendChild(voteCell);
-        voteCell.appendChild(voteForm);
-        voteForm.appendChild(voteBtn);
+        //voteCell.appendChild(voteForm);
+        //voteForm.appendChild(voteBtn);
+        voteCell.appendChild(voteBtn);
     }
 }
-
 
 
 function loadModalTable(i) {
@@ -196,6 +198,23 @@ function main() {
             return pageNumber;
         }
     });
+    $(document).on('click', '.vote-button', function () {
+        var planetId = $(this).attr('data-planetid');
+        var votedPlanetId = JSON.stringify({votedplanet:planetId});
+        $.ajax({
+            type : 'POST',
+            url : '/vote',
+            contentType: 'application/json;charset=UTF-8',
+            data : JSON.stringify({votedPlanetId}),
+            success : function(response) {
+                alert('Successfully voted on planet!');
+            },
+            error: function(error) {
+                alert('Failed to vote!');
+            }
+        })
+        }
+    );
     statBtn.addEventListener('click', function() {return statModal();});
     loadTable(url);
 }
