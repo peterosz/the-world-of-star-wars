@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS swusers;
 CREATE TABLE swusers (
     id SERIAL PRIMARY KEY,
     username VARCHAR(30) UNIQUE NOT NULL,
-    p4ssword CHAR(80) NOT NULL
+    p4ssword TEXT NOT NULL
 );
 
 

@@ -8,6 +8,13 @@
     <body>
         <header>
             <h1>Please type your credentials:</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="flash">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </header>
         <form method="POST" action="/login">
             <p>User Name:</p>
@@ -17,13 +24,6 @@
             <button type="submit">Log in</button>
             <p>Don't have a user name yet?</p>
             <a href="/register">Register here</a>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
         </form>
     </body>
 </html>

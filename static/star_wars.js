@@ -1,6 +1,6 @@
-function loadTable(url) {
+function loadTable(pageUrl) {
     var table = document.getElementById('sw-table');
-    var planets = getApiData(url);
+    var planets = getApiData(pageUrl);
     var tableBody = document.createElement('tbody');
     tableBody.setAttribute('id', 'table-body');
     table.appendChild(tableBody);
@@ -30,6 +30,9 @@ function loadTable(url) {
         planetPopulation.innerHTML = planets[i].population;
         planetName.setAttribute('data-name', planets[i].name);
         planetName.setAttribute('id', 'planet-name'+i);
+        planetName.setAttribute('data-id'+i, planets[i].url.replace( /[^\d]/g, '' ));
+        newRow.setAttribute('class', 'sw-tr');
+        voteColumn(i);
         if (planets[i].residents.length > 0) {
             var residentsButton = document.createElement('button');
             residentsButton.innerHTML = planets[i].residents.length +' resident(s)';
@@ -43,6 +46,29 @@ function loadTable(url) {
         }
     }
 }
+
+
+function voteColumn(i) {
+    var headerColumns = document.getElementsByClassName('sw-th');
+    var lastColumn = headerColumns[headerColumns.length - 1];
+    var voteCell = document.createElement('td');
+    var voteBtn = document.createElement('button');
+    var voteForm = document.createElement('form');
+    var getPlanet = document.getElementById('planet-name'+i);
+    var planetId = getPlanet.getAttribute('data-id'+i);
+    var rows = document.getElementsByClassName('sw-tr');
+    voteBtn.setAttribute('class', 'vote-button');
+    voteForm.setAttribute('method', 'POST');
+    voteForm.setAttribute('action', '/vote/'+planetId);    
+    voteBtn.setAttribute('type', 'submit');
+    voteBtn.innerHTML = 'Vote on this planet';
+    if (lastColumn.innerHTML === 'Vote') {
+        rows[i].appendChild(voteCell);
+        voteCell.appendChild(voteForm);
+        voteForm.appendChild(voteBtn);
+    }
+}
+
 
 
 function loadModalTable(i) {
@@ -130,10 +156,31 @@ function loadNewPage(pageNumber) {
 }
 
 
+function statModal() {
+    var modal = document.getElementById('modal');
+    var closeBtn = document.getElementsByClassName('modal-close-button')[0];
+    var closeBtnX = document.getElementsByClassName('modal-close')[0];
+    modal.style.display = 'block';
+    window.onclick = function(event) {
+    if (event.target === modal) {
+        modal.style.display = "none";       
+        }
+    }
+    closeBtn.onclick = function() {
+        modal.style.display = "none";        
+    }
+    closeBtnX.onclick = function() {
+        modal.style.display = "none";
+    }
+
+}
+
+
 function main() {
     var pageNumber = 1;
     var nextBtn = document.getElementById('next');
     var prevBtn = document.getElementById('prev');
+    var statBtn = document.getElementById('statistics');
     var url = 'http://swapi.co/api/planets/';
     nextBtn.addEventListener('click', function() {
         while (pageNumber < 7) {
@@ -149,6 +196,7 @@ function main() {
             return pageNumber;
         }
     });
+    statBtn.addEventListener('click', function() {return statModal();});
     loadTable(url);
 }
 

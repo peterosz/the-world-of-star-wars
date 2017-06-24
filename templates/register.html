@@ -8,6 +8,13 @@
     <body>
         <header>
             <h1>Please add a user name and password:</h1>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <p class="flash">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </header>
         <form method="POST" action="/register">
             <p>User Name:</p>
