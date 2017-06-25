@@ -254,7 +254,7 @@ function handleStatistics(planetId, numberOfVotes) {
         $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'http://swapi.co/api/planets/' + planetId,
+        url: 'https://swapi.co/api/planets/' + planetId,
         success: function(response) {
             var planetName = response.name;
             displayStatistics(planetName, numberOfVotes)
@@ -280,7 +280,7 @@ function main() {
     var nextBtn = document.getElementById('next');
     var prevBtn = document.getElementById('prev');
     var statBtn = document.getElementById('statistics');
-    var pageUrl = 'http://swapi.co/api/planets/';
+    var pageUrl = 'https://swapi.co/api/planets/';
     nextBtn.addEventListener('click', function() {
         while (pageNumber < 7) {
         pageNumber++;
