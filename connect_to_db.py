@@ -4,6 +4,7 @@ import urllib
 
 
 def connect_db(connect_data):
+
     connection = None
     try:
         urllib.parse.uses_netloc.append('postgres')
@@ -15,7 +16,7 @@ def connect_db(connect_data):
             host=url.hostname,
             port=url.port
         )
-        
+        conn = psycopg2.connect(connection)
         return connection
     except Exception as error:
         print(error)
