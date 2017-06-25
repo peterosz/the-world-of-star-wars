@@ -23,11 +23,23 @@ function loadTable(pageUrl) {
         newRow.appendChild(planetPopulation);
         newRow.appendChild(planetResidents);
         planetName.innerHTML = planets[i].name;
-        planetDiameter.innerHTML = planets[i].diameter;
+        if (planets[i].diameter !== 'unknown') {
+            planetDiameter.innerHTML = planets[i].diameter+' km';
+        } else {
+            planetDiameter.innerHTML = planets[i].diameter;
+        }
         planetClimate.innerHTML = planets[i].climate;
         planetTerrain.innerHTML = planets[i].terrain;
-        planetSurface.innerHTML = planets[i].surface_water;
-        planetPopulation.innerHTML = planets[i].population;
+        if (planets[i].surface_water !== 'unknown') {
+            planetSurface.innerHTML = planets[i].surface_water+'%';
+        } else {
+            planetSurface.innerHTML = planets[i].surface_water;
+        }
+        if (planets[i].population !== 'unknown') {
+            planetPopulation.innerHTML = planets[i].population/1000000 + ' million';
+        } else {
+            planetPopulation.innerHTML = planets[i].population
+        }
         planetName.setAttribute('data-name', planets[i].name);
         planetName.setAttribute('id', 'planet-name'+i);
         planetName.setAttribute('data-id'+i, planets[i].url.replace( /[^\d]/g, '' ));
@@ -53,21 +65,12 @@ function voteColumn(i, planets) {
     var lastColumn = headerColumns[headerColumns.length - 1];
     var voteCell = document.createElement('td');
     var voteBtn = document.createElement('button');
-    //var voteForm = document.createElement('form');
-    //var getPlanet = document.getElementById('planet-name'+i);
-    //var planetId = getPlanet.getAttribute('data-id'+i);
     var rows = document.getElementsByClassName('sw-tr');
     voteBtn.setAttribute('class', 'vote-button');
     voteBtn.setAttribute('data-planetid', planets[i].url.replace( /[^\d]/g, '' ));
-    //voteBtn.setAttribute('data-planet-name', planets[i].name);
-    //voteForm.setAttribute('method', 'POST');
-    //voteForm.setAttribute('action', '/vote/'+planetId);    
-    //voteBtn.setAttribute('type', 'submit');
     voteBtn.innerHTML = 'Vote on this planet';
     if (lastColumn.innerHTML === 'Vote') {
         rows[i].appendChild(voteCell);
-        //voteCell.appendChild(voteForm);
-        //voteForm.appendChild(voteBtn);
         voteCell.appendChild(voteBtn);
     }
 }
@@ -77,6 +80,26 @@ function loadModalTable(i) {
     var modal = document.getElementById('modal');
     var modalTable = document.getElementsByClassName('modal-table')[0];
     var modalTableBody = document.createElement('tbody');
+    
+    var modalTableHeader = document.createElement('thead');
+    modalTableHeader.setAttribute('id', 'modal-table-head');
+    var modalHeaderRow = document.createElement('tr');
+    var modalTableHeaderNames = ['Name',
+                            'Height',
+                            'Mass',
+                            'Hair color',
+                            'Skin color',
+                            'Eye color',
+                            'Birth year',
+                            'Gender'];
+    for (let h = 0; h < modalTableHeaderNames.length; h++) {
+        var modalHeaderCell = document.createElement('th');
+        modalHeaderCell.innerHTML = modalTableHeaderNames[h];
+        modalHeaderRow.appendChild(modalHeaderCell);
+    }
+    modalTable.appendChild(modalTableHeader);
+    modalTableHeader.appendChild(modalHeaderRow);
+
     modalTableBody.setAttribute('id', 'modal-table-body');
     modal.style.display = 'block';
     var closeBtn = document.getElementsByClassName('modal-close-button')[0];
@@ -85,23 +108,29 @@ function loadModalTable(i) {
     window.onclick = function(event) {
     if (event.target === modal) {
         var modalOldRows = document.getElementById('modal-table-body');
+        var modalOldHead = document.getElementById('modal-table-head');
         modalTable.removeChild(modalOldRows);
+        modalTable.removeChild(modalOldHead);
         modal.style.display = "none";       
         }
     }
     closeBtn.onclick = function() {
         var modalOldRows = document.getElementById('modal-table-body');
+        var modalOldHead = document.getElementById('modal-table-head');
         modalTable.removeChild(modalOldRows);
+        modalTable.removeChild(modalOldHead);
         modal.style.display = "none";        
     }
     closeBtnX.onclick = function() {
         var modalOldRows = document.getElementById('modal-table-body');
+        var modalOldHead = document.getElementById('modal-table-head');
         modalTable.removeChild(modalOldRows);
+        modalTable.removeChild(modalOldHead);
         modal.style.display = "none";
     }
     var planetName = document.getElementById('planet-name'+i);
     var getPlanetName = planetName.getAttribute('data-name');
-    var modalTitle = document.getElementsByClassName('modal-title')[0];
+    var modalTitle = document.getElementById('modal-title');
     modalTitle.innerHTML = 'Residents of '+getPlanetName;
     modalTable.appendChild(modalTableBody);
     residentBtn = document.getElementById('residentBtn'+i);
@@ -164,18 +193,86 @@ function statModal() {
     var closeBtnX = document.getElementsByClassName('modal-close')[0];
     modal.style.display = 'block';
     window.onclick = function(event) {
-    if (event.target === modal) {
-        modal.style.display = "none";       
+        if (event.target === modal) {
+            var modalOldRows = document.getElementById('modal-table-body');
+            var modalOldHead = document.getElementById('modal-table-head');
+            modalTable.removeChild(modalOldRows);
+            modalTable.removeChild(modalOldHead);
+            modal.style.display = "none";       
         }
     }
     closeBtn.onclick = function() {
+        var modalOldRows = document.getElementById('modal-table-body');
+        var modalOldHead = document.getElementById('modal-table-head');
+        modalTable.removeChild(modalOldRows);
+        modalTable.removeChild(modalOldHead);
         modal.style.display = "none";        
     }
     closeBtnX.onclick = function() {
+        var modalOldRows = document.getElementById('modal-table-body');
+        var modalOldHead = document.getElementById('modal-table-head');
+        modalTable.removeChild(modalOldRows);
+        modalTable.removeChild(modalOldHead);
         modal.style.display = "none";
     }
 
+    var modalTable = document.getElementsByClassName('modal-table')[0];
+    var modalTableHeader = document.createElement('thead');
+    modalTableHeader.setAttribute('id', 'modal-table-head');
+    var modalHeaderRow = document.createElement('tr');
+    var modalTableHeaderNames = ['Planet name', 'Votes'];
+                            
+    for (let h = 0; h < modalTableHeaderNames.length; h++) {
+        var modalHeaderCell = document.createElement('th');
+        modalHeaderCell.innerHTML = modalTableHeaderNames[h];
+        modalHeaderRow.appendChild(modalHeaderCell);
+    }
+    modalTable.appendChild(modalTableHeader);
+    modalTableHeader.appendChild(modalHeaderRow);
+
+    var modalTableBody = document.createElement('tbody');
+    modalTableBody.setAttribute('id', 'modal-table-body');
+    modalTable.appendChild(modalTableBody);
+
+    $.ajax({
+            type: 'POST',
+            url: '/statistics',
+            dataType: 'json',
+            success: function(response) {
+                for (property of response) {
+                    handleStatistics(property[0], property[1]);
+                }
+            },
+            error: function() {
+                alert('Error in network request!');
+            }
+        });
 }
+
+
+function handleStatistics(planetId, numberOfVotes) {
+        $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: 'http://swapi.co/api/planets/' + planetId,
+        success: function(response) {
+            var planetName = response.name;
+            displayStatistics(planetName, numberOfVotes)
+        },
+        error: function() {
+            alert('Error loading planets data!');
+            }
+        });
+    };
+
+
+function displayStatistics(planetName, numberOfVotes) {
+        $('#modal-table-body').append('<tr>' +
+                                    '<td>' + planetName + '</td>' +
+                                    '<td>' + numberOfVotes + '</td>' +
+                                    '</tr>');                    
+   }
+
 
 
 function main() {

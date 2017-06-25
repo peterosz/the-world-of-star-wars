@@ -8,7 +8,7 @@
     </head>
     <body>
         <header>
-            <h1>Please type your credentials:</h1>
+            <h2>Please type your credentials:</h2>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -17,14 +17,14 @@
                 {% endif %}
             {% endwith %}
         </header>
-        <form method="POST" action="/login">
-            <p>User Name:</p>
-            <input type="text" name="name" pattern=".{3,}" required title="3 characters minimum">
-            <p>Password:</p>
-            <input type="password" name="password" pattern=".{5,}"   required title="5 characters minimum">
-            <button type="submit">Log in</button>
-            <p>Don't have a user name yet?</p>
-            <a href="/register">Register here</a>
-        </form>
+            <form method="POST" action="/login">
+                <p class="login_text">User Name:</p>
+                <input type="text" name="name" pattern=".{3,}" required title="3 characters minimum">
+                <p class="login_text">Password:</p>
+                <input type="password" name="password" pattern=".{5,}"   required title="5 characters minimum">
+                <button type="submit">Log in</button>
+                <p class="login_text">Don't have a user name yet?</p>
+                <a href="/register" id="register">Register here</a>
+            </form>
     </body>
 </html>

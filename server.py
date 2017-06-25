@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from connect_to_db import execute_query
 from datetime import datetime
@@ -15,37 +15,16 @@ def index():
                     'Diameter in km',
                     'Climate',
                     'Terrain',
-                    'Surface water percentage',
-                    'Population in formatted way',
+                    'Surface water',
+                    'Population',
                     'Residents']
-    modal_table_header = ['Name',
-                          'Height',
-                          'Mass',
-                          'Hair color',
-                          'Skin color',
-                          'Eye color',
-                          'Birth year',
-                          'Gender']
-    stats_header = ['Planet name',
-                    'Votes']
     if session['logged_in']:
         user_logged_in = session['username']
-        table_header = ['Name',
-                        'Diameter in km',
-                        'Climate',
-                        'Terrain',
-                        'Surface water percentage',
-                        'Population in formatted way',
-                        'Residents',
-                        'Vote']
+        table_header.append('Vote')
         return render_template('index.html', table_header=table_header,
-                                            modal_table_header=modal_table_header,
-                                            stats_header=stats_header,
                                             user_logged_in=user_logged_in)
     else:
-        return render_template('index.html', table_header=table_header,
-                                             modal_table_header=modal_table_header,
-                                             stats_header=stats_header)
+        return render_template('index.html', table_header=table_header)
 
 
 @app.route('/login', methods=['GET'])
@@ -130,6 +109,17 @@ def vote():
                             VALUES ('%s', '%s', '%s');''' % (planet_id, user_id, timestamp)
         execute_query(query_save_vote)
     return redirect(url_for('index'))
+
+
+@app.route('/statistics', methods=['POST'])
+def statistics():
+    query_stat = '''SELECT planet_id, count(planet_id)
+                    FROM planet_votes
+                    GROUP BY planet_id
+                    ORDER BY planet_id;'''
+    vote_stats = execute_query(query_stat)
+    vote_stats = jsonify(vote_stats)
+    return  vote_stats
 
 
 if __name__ == '__main__':

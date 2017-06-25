@@ -9,13 +9,17 @@
     <body>
         <header>
             <h1>Star Wars universe planets</h1>
+            <button id="statistics">Statistics</button>
+            <div id="logged_in_display">
             {% if user_logged_in %}
-                {{ user_logged_in }}
                 <a href="/logout">Log out</a>
+                <p id="logged_text">Logged in as:</p>
+                <p id="user_name">{{ user_logged_in }}</p>
             {% else %}
                 <a href="/login">Log in</a>
                 <a href="/register">Register</a>            
             {% endif %}
+            </div>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -23,7 +27,6 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <button id="statistics">Statistics</button>
         </header>
         <table id="sw-table">
             <thead>
@@ -39,18 +42,11 @@
         <div id="modal">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title"></div>
+                    <div id="modal-title"></div>
                     <div class="modal-close">&times;</div>
                 </div>
                 <div class="modal-body">
                     <table class="modal-table">
-                        <thead>
-                            <tr>
-                                {% for title in modal_table_header %}
-                                    <th>{{ title }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
                     </table>
                     <button class="modal-close-button">Close</button>
                 </div>
