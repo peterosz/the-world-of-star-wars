@@ -49,8 +49,8 @@ function loadTable(pageUrl) {
             var residentsButton = document.createElement('button');
             residentsButton.innerHTML = planets[i].residents.length +' resident(s)';
             planetResidents.appendChild(residentsButton);
-            var residentsList = planets[i].residents.slice(0, 3);
-            residentsList = 'https'+residentsList;
+            var residentsList = planets[i].residents;
+            residentsList = residentsList.replace('http', 'https');
             residentsButton.setAttribute('id', 'residentBtn'+i);
             residentsButton.setAttribute('data-residents', residentsList);
             residentsButton.addEventListener('click', function() {return loadModalTable(i);});
