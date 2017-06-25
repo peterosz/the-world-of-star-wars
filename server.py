@@ -122,5 +122,20 @@ def statistics():
     return  vote_stats
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html', error=error), 404
+
+
+@app.errorhandler(405)
+def page_not_found(error):
+    return render_template('error.html', error=error), 405
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html', error=error), 500
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

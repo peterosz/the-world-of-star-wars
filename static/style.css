@@ -71,6 +71,10 @@ a {
     font-weight: bold;
 }
 
+#backtohome {
+    float: left;
+}
+
 #register {
     float: left;
 }
