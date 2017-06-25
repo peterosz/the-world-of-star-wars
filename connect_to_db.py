@@ -1,5 +1,4 @@
 import psycopg2
-from local_config import *
 import os
 import urllib
 
