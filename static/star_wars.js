@@ -168,9 +168,9 @@ function loadModalTable(i) {
 }
 
 
-function getApiData(url) {
+function getApiData(pageUrl) {
     var xhttp = new XMLHttpRequest();
-    xhttp.open('GET', url, false);
+    xhttp.open('GET', pageUrl, false);
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.send();
     var response = JSON.parse(xhttp.responseText);
@@ -182,8 +182,8 @@ function loadNewPage(pageNumber) {
     var table = document.getElementById('sw-table');
     var oldRows = document.getElementById('table-body');
     table.removeChild(oldRows);
-    url = 'https://swapi.co/api/planets/?page=' + pageNumber;
-    loadTable(url);
+    pageUrl = 'https://swapi.co/api/planets/?page=' + pageNumber;
+    loadTable(pageUrl);
 }
 
 
@@ -280,7 +280,7 @@ function main() {
     var nextBtn = document.getElementById('next');
     var prevBtn = document.getElementById('prev');
     var statBtn = document.getElementById('statistics');
-    var url = 'http://swapi.co/api/planets/';
+    var pageUrl = 'http://swapi.co/api/planets/';
     nextBtn.addEventListener('click', function() {
         while (pageNumber < 7) {
         pageNumber++;
@@ -313,7 +313,7 @@ function main() {
         }
     );
     statBtn.addEventListener('click', function() {return statModal();});
-    loadTable(url);
+    loadTable(pageUrl);
 }
 
 
