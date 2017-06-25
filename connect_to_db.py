@@ -23,7 +23,7 @@ def connect_db():
 
 def execute_query(query):
     result = {}
-    connection = connect_db(connect_credentials)
+    connection = connect_db()
     if connection == 'connection error':
         result = 'Connection error. Server unreachable.'
         return result
@@ -37,5 +37,4 @@ def execute_query(query):
             cursor.close()
         except Exception as error:
             result = error
-            print(error)
         return result
