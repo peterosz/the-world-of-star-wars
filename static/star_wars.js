@@ -52,7 +52,7 @@ function loadTable(pageUrl) {
             var residentsList = planets[i].residents.slice(0, 3);
             residentsList = 'https'+residentsList;
             residentsButton.setAttribute('id', 'residentBtn'+i);
-            residentsButton.setAttribute('data-residents', planets[i].residents);
+            residentsButton.setAttribute('data-residents', residentsList);
             residentsButton.addEventListener('click', function() {return loadModalTable(i);});
         } else {
             planetResidents.innerHTML = 'No known residents';
