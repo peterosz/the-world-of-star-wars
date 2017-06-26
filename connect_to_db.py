@@ -3,7 +3,7 @@ import psycopg2
 import urllib
 
 
-def connect_db(connect_data):
+def connect_db():
 
     connection = None
     try:
@@ -25,8 +25,7 @@ def connect_db(connect_data):
 
 def execute_query(query):
     result = {}
-    connect_data = "dbname={0} user={1} password={2} host={3} port={4}".format(url.path[1:], url.username, url.password, url.hostname, url.port)
-    connection = connect_db(connect_data)
+    connection = connect_db()
     if connection == 'connection error':
         result = 'Connection error. Server unreachable.'
         return result
