@@ -16,7 +16,6 @@ def connect_db():
             host=url.hostname,
             port=url.port
         )
-        connection = psycopg2.connect(connection)
         return connection
     except Exception as error:
         print(error)
